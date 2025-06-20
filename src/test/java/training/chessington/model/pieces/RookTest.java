@@ -143,4 +143,54 @@ public class RookTest {
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, 6)));
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, 7)));
     }
+
+    @Test
+    public void whiteRookCannotMoveLeftBeyondWhitePiece() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(7, 7);
+        board.placePiece(coords, rook);
+
+        Piece knight = new Knight(PlayerColour.WHITE);
+        Coordinates knightCoords = new Coordinates(7, 5);
+        board.placePiece(knightCoords, knight);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(0, -1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -3)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -4)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -5)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -6)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0, -7)));
+    }
+
+    @Test
+    public void blackRookCannotMoveUpBeyondBlackPiece() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(7, 3);
+        board.placePiece(coords, rook);
+
+        Piece knight = new Knight(PlayerColour.WHITE);
+        Coordinates knightCoords = new Coordinates(4, 3);
+        board.placePiece(knightCoords, knight);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(-1, 0)));
+        assertThat(moves).contains(new Move(coords, coords.plus(-2, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-3, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-4, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-5, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-6, 0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-7, 0)));
+    }
 }
