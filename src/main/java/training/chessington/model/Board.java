@@ -37,6 +37,10 @@ public class Board {
         board[rowIndex][7] = new Rook(colour);
     }
 
+    public boolean containsCoord(Coordinates coord) {
+        return coord.getRow() >= 0 && coord.getRow() < 8 && coord.getCol() >= 0 && coord.getCol() < 8;
+    }
+
     public Piece get(Coordinates coords) {
         return board[coords.getRow()][coords.getCol()];
     }
