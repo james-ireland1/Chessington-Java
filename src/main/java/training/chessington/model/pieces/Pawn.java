@@ -34,12 +34,12 @@ public class Pawn extends AbstractPiece {
             }
         }
         if (board.containsCoord(left)) {
-            if (board.get(forwardOnce) != null) {
+            if (board.get(left) != null) {
                 output.add(new Move(from, left));
             }
         }
         if (board.containsCoord(right)) {
-            if (board.get(forwardOnce) != null) {
+            if (board.get(right) != null) {
                 output.add(new Move(from, right));
             }
         }
