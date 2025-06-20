@@ -24,7 +24,7 @@ public class Rook extends AbstractPiece {
         Coordinates up = new Coordinates(-1,0);
         for (int i = 1; i <= 8; i++) {
             to = from.plus(up.getRow()*i, up.getCol()*i);
-            if (board.containsCoord(to)) {
+            if (board.containsCoord(to) && board.get(to) == null) {
                 output.add(new Move(from, to));
             } else {
                 break;
@@ -35,7 +35,7 @@ public class Rook extends AbstractPiece {
         Coordinates down = new Coordinates(1,0);
         for (int i = 1; i <= 8; i++) {
             to = from.plus(down.getRow()*i, down.getCol()*i);
-            if (board.containsCoord(to)) {
+            if (board.containsCoord(to) && board.get(to) == null) {
                 output.add(new Move(from, to));
             } else {
                 break;
@@ -46,7 +46,7 @@ public class Rook extends AbstractPiece {
         Coordinates left = new Coordinates(0,-1);
         for (int i = 1; i <= 8; i++) {
             to = from.plus(left.getRow()*i, left.getCol()*i);
-            if (board.containsCoord(to)) {
+            if (board.containsCoord(to) && board.get(to) == null) {
                 output.add(new Move(from, to));
             } else {
                 break;
@@ -57,7 +57,7 @@ public class Rook extends AbstractPiece {
         Coordinates right = new Coordinates(0,1);
         for (int i = 1; i <= 8; i++) {
             to =  from.plus(right.getRow()*i, right.getCol()*i);
-            if (board.containsCoord(to)) {
+            if (board.containsCoord(to) && board.get(to) == null) {
                 output.add(new Move(from, to));
             } else {
                 break;
