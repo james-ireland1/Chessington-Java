@@ -99,6 +99,6 @@ public class RookTest {
         List<Move> moves = rook.getAllowedMoves(coords, board);
 
         // Assert
-        assertThat(moves).contains(new Move(coords, coords.plus(0, 0)));
+        assertThat(moves).contains(new Move(coords, coords.plus(0, -7)));
     }
 }
