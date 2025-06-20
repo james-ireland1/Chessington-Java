@@ -41,4 +41,64 @@ public class RookTest {
         // Assert
         assertThat(moves).contains(new Move(coords, coords.plus(-1, 0)));
     }
+
+    @Test
+    public void whiteRookCanMoveUpSevenSquares() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(7, 0);
+        board.placePiece(coords, rook);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(-7, 0)));
+    }
+
+    @Test
+    public void blackRookCanMoveDownSevenSquares() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(0, 0);
+        board.placePiece(coords, rook);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(7, 0)));
+    }
+
+    @Test
+    public void whiteRookCanMoveRightSevenSquares() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(7, 0);
+        board.placePiece(coords, rook);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(0, 7)));
+    }
+
+    @Test
+    public void blackRookCanMoveLeftSevenSquares() {
+        // Arrange
+        Board board = Board.empty();
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(0, 7);
+        board.placePiece(coords, rook);
+
+        // Act
+        List<Move> moves = rook.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(coords, coords.plus(0, 0)));
+    }
 }
