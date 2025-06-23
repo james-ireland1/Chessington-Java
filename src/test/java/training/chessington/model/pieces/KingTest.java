@@ -218,4 +218,23 @@ public class KingTest {
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(1,-1)));
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,1)));
     }
+
+    @Test
+    public void whiteKingVsBlackKing() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        Piece blackKing = new King(PlayerColour.BLACK);
+        Coordinates blackCoords = new Coordinates(5,4);
+        board.placePiece(blackCoords, blackKing);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1,0)));
+
+        assertThat(moves).contains(new Move(coords, coords.plus(1,1)));
+    }
 }

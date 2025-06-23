@@ -78,6 +78,26 @@ public class Board {
         return copy;
     }
 
+    public boolean isSpaceEmpty(Coordinates coord) { //not a fan of these functions with multiple returns, not sure how to avoid attempting to access spaces off the edge of the board
+        if (this.containsCoord(coord)) {
+            return this.board[coord.getRow()][coord.getCol()] == null;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isSpaceEnemy(Coordinates coord, Piece piece) {
+        if (this.containsCoord(coord)) {
+            if (this.get(coord) != null) {
+                return this.get(coord).getColour() != piece.getColour();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
     public Piece get(Coordinates coords) {
         return board[coords.getRow()][coords.getCol()];
     }

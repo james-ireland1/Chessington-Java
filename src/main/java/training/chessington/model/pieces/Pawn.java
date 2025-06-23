@@ -17,8 +17,8 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         //Allowed moves for a pawn - forward once, forward twice, diagonally left once, diagonally right once
         List<Move> output = new ArrayList<>();
-        Integer dir = (this.getColour() == PlayerColour.WHITE) ? -1 : 1;
-        Integer startRow = (this.getColour() == PlayerColour.WHITE) ? 6 : 1;
+        int dir = (this.getColour() == PlayerColour.WHITE) ? -1 : 1;
+        int startRow = (this.getColour() == PlayerColour.WHITE) ? 6 : 1;
         Coordinates forwardOnce = from.plus(1*dir,0); //only allowed if space is empty
         Coordinates forwardTwice = from.plus(2*dir,0); //only allowed if it is the first move, and forwardOnce AND forwardTwice are empty
         Coordinates left = from.plus(1*dir,1*dir); //only allowed if space is occupied
