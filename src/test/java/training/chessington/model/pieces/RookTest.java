@@ -177,7 +177,7 @@ public class RookTest {
         Coordinates coords = new Coordinates(7, 3);
         board.placePiece(coords, rook);
 
-        Piece knight = new Knight(PlayerColour.WHITE);
+        Piece knight = new Knight(PlayerColour.BLACK);
         Coordinates knightCoords = new Coordinates(4, 3);
         board.placePiece(knightCoords, knight);
 
