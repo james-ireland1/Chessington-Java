@@ -200,4 +200,22 @@ public class KingTest {
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,0)));
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,1)));
     }
+
+
+    @Test
+    public void whiteKingMustMoveOutOfCheck() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        Piece bishop = new Bishop(PlayerColour.BLACK);
+        Coordinates bishopCoords = new Coordinates(7,0);
+        board.placePiece(bishopCoords, bishop);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1,-1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,1)));
+    }
 }
