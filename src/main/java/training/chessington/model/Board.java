@@ -5,6 +5,7 @@ import training.chessington.model.pieces.*;
 public class Board {
 
     private Piece[][] board = new Piece[8][8];
+    public boolean isProvisional = false;
 
     private Board() {
     }
@@ -74,6 +75,7 @@ public class Board {
 
     public Board makeProvisionalMove(Move move) {
         Board copy = this.copy();
+        copy.isProvisional = true;
         copy.move(move.getFrom(), move.getTo());
         return copy;
     }

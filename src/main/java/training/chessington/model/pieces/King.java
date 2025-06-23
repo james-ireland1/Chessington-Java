@@ -18,10 +18,10 @@ public class King extends AbstractPiece {
         Coordinates to = from.plus(direction.getRow(),direction.getCol());
         if (board.containsCoord(to)) {
             Board provisionalBoard = board.makeProvisionalMove(new Move(from, to));
-            if (!provisionalBoard.isSpaceUnderAttack(to, this.getColour())) {
-                if (board.get(to) == null) {
-                    moves.add(new Move(from, to));
-                } else if (board.get(to).getColour() != this.getColour()) {
+            if (board.isProvisional) {
+                moves.add(new Move(from, to));
+            } else if (!provisionalBoard.isSpaceUnderAttack(to, this.getColour())) {
+                if (canMoveHere(board, to)) {
                     moves.add(new Move(from, to));
                 }
             }
