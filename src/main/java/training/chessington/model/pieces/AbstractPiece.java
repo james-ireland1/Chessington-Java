@@ -18,10 +18,10 @@ public abstract class AbstractPiece implements Piece {
         this.colour = colour;
     }
 
-    public List<Move> getAllMovesInOneDirection(Coordinates from, Board board, Coordinates step) { //return all the valid moves a piece can make by repeating 'step'
+    private List<Move> getMaxMovesInOneDirection(Coordinates from, Board board, Coordinates step, int maxSteps) { //return all the valid moves a piece can make by repeating 'step'
         List<Move> moves = new ArrayList<>();
         Coordinates to;
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= maxSteps; i++) {
             to = from.plus(step.getRow()*i, step.getCol()*i);
             if (!board.containsCoord(to)) {break;}
             if (board.get(to) == null) {
@@ -32,6 +32,14 @@ public abstract class AbstractPiece implements Piece {
             }
         }
         return moves;
+    }
+
+    public List<Move> getAllMovesInOneDirection(Coordinates from, Board board, Coordinates step) {
+        return getMaxMovesInOneDirection(from, board, step, 8);
+    }
+
+    public List<Move> getAllMovesInOneDirection(Coordinates from, Board board, Coordinates step, int maxSteps) {
+        return getMaxMovesInOneDirection(from, board, step, maxSteps);
     }
 
     @Override
