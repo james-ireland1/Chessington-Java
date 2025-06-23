@@ -15,6 +15,27 @@ public class Queen extends AbstractPiece {
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        return new ArrayList<>();
+        List<Move> output = new ArrayList<>();
+
+        Coordinates up = new Coordinates(-1,0);
+        Coordinates upRight = new Coordinates(-1,1);
+        Coordinates right = new Coordinates(0,1);
+        Coordinates downRight = new Coordinates(1,1);
+        Coordinates down = new Coordinates(1,0);
+        Coordinates downLeft = new Coordinates(1,-1);
+        Coordinates left = new Coordinates(0,-1);
+        Coordinates upLeft = new Coordinates(-1,-1);
+
+        output.addAll(this.getAllMovesInOneDirection(from, board, up));
+        output.addAll(this.getAllMovesInOneDirection(from, board, upRight));
+        output.addAll(this.getAllMovesInOneDirection(from, board, right));
+        output.addAll(this.getAllMovesInOneDirection(from, board, downRight));
+        output.addAll(this.getAllMovesInOneDirection(from, board, down));
+        output.addAll(this.getAllMovesInOneDirection(from, board, downLeft));
+        output.addAll(this.getAllMovesInOneDirection(from, board, left));
+        output.addAll(this.getAllMovesInOneDirection(from, board, upLeft));
+
+
+        return output;
     }
 }
