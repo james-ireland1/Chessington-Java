@@ -16,11 +16,14 @@ public class King extends AbstractPiece {
     public List<Move> checkKingCanMoveHere(Board board, Coordinates from, Coordinates direction) {
         List<Move> moves = new ArrayList<>();
         Coordinates to = from.plus(direction.getRow(),direction.getCol());
-        if (board.containsCoord(to) && !board.isSpaceUnderAttack(to, this.getColour())) {
-            if (board.get(to) == null) {
-                moves.add(new Move(from, to));
-            } else if (board.get(to).getColour() != this.getColour()) {
-                moves.add(new Move(from, to));
+        if (board.containsCoord(to)) {
+            Board provisionalBoard = board.makeProvisionalMove(new Move(from, to));
+            if (!provisionalBoard.isSpaceUnderAttack(to, this.getColour())) {
+                if (board.get(to) == null) {
+                    moves.add(new Move(from, to));
+                } else if (board.get(to).getColour() != this.getColour()) {
+                    moves.add(new Move(from, to));
+                }
             }
         }
         return moves;

@@ -62,6 +62,22 @@ public class Board {
         return isUnderAttack;
     }
 
+    public Board copy() {
+        Board copy = Board.empty();
+        for (int row = 0; row < this.board.length; row++) {
+            for (int col = 0; col < this.board[row].length; col++) {
+                copy.board[row][col] = this.board[row][col];
+            }
+        }
+        return copy;
+    }
+
+    public Board makeProvisionalMove(Move move) {
+        Board copy = this.copy();
+        copy.move(move.getFrom(), move.getTo());
+        return copy;
+    }
+
     public Piece get(Coordinates coords) {
         return board[coords.getRow()][coords.getCol()];
     }
