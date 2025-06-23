@@ -95,7 +95,7 @@ public class KingTest {
         Coordinates coords = new Coordinates(4,3);
         board.placePiece(coords, king);
 
-        Piece blackPawn = new King(PlayerColour.BLACK);
+        Piece blackPawn = new Pawn(PlayerColour.BLACK);
         Coordinates blackPawnCoords = new Coordinates(3,3);
         board.placePiece(blackPawnCoords, blackPawn);
 

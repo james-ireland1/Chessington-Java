@@ -41,6 +41,27 @@ public class Board {
         return coord.getRow() >= 0 && coord.getRow() < 8 && coord.getCol() >= 0 && coord.getCol() < 8;
     }
 
+    public boolean isSpaceUnderAttack(Coordinates defenderCoord, PlayerColour defenderColour) {
+        PlayerColour attackerColour = PlayerColour.WHITE;
+        if (defenderColour == PlayerColour.WHITE) {
+            attackerColour = PlayerColour.BLACK;
+        }
+        boolean isUnderAttack = false;
+        for (int row = 0; row < this.board.length; row++) {
+            for (int col = 0; col < this.board[row].length; col++) {
+                Coordinates attackerCoord = new Coordinates(row, col);
+                Piece attackerPiece = this.get(attackerCoord);
+                if (this.get(attackerCoord) == null) {continue;}
+                if (attackerPiece.getColour() == attackerColour) {
+                    if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
+                        isUnderAttack = true;
+                    }
+                }
+            }
+        }
+        return isUnderAttack;
+    }
+
     public Piece get(Coordinates coords) {
         return board[coords.getRow()][coords.getCol()];
     }
