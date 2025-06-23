@@ -21,27 +21,23 @@ public class Pawn extends AbstractPiece {
         int startRow = (this.getColour() == PlayerColour.WHITE) ? 6 : 1;
         Coordinates forwardOnce = from.plus(1*dir,0); //only allowed if space is empty
         Coordinates forwardTwice = from.plus(2*dir,0); //only allowed if it is the first move, and forwardOnce AND forwardTwice are empty
-        Coordinates left = from.plus(1*dir,1*dir); //only allowed if space is occupied
-        Coordinates right = from.plus(1*dir, -1*dir); //only allowed if space is occupied
-        if (board.containsCoord(forwardOnce)) {
-            if (board.get(forwardOnce) == null) {
-                output.add(new Move(from, forwardOnce));
-            }
+        Coordinates fwdLeft = from.plus(1*dir,1*dir); //only allowed if space is occupied
+        Coordinates fwdRight = from.plus(1*dir, -1*dir); //only allowed if space is occupied
+        Coordinates left = from.plus(0,1*dir);
+        Coordinates right = from.plus(0,-1*dir);
+
+
+        if (board.containsCoord(forwardOnce) && board.isSpaceEmpty(forwardOnce)) {
+            output.add(new Move(from, forwardOnce));
         }
-        if (board.containsCoord(forwardTwice)) {
-            if (board.get(forwardOnce) == null && board.get(forwardTwice) == null && from.getRow() == startRow) {
-                output.add(new Move(from, forwardTwice));
-            }
+        if (board.containsCoord(forwardTwice) && board.isSpaceEmpty(forwardOnce) && board.isSpaceEmpty(forwardTwice) && !this.hasMoved) {
+            output.add(new Move(from, forwardTwice));
         }
-        if (board.containsCoord(left)) {
-            if (board.get(left) != null && board.get(left).getColour() != this.getColour()) {
-                output.add(new Move(from, left));
-            }
+        if (board.containsCoord(fwdLeft) && (board.isSpaceEnemy(fwdLeft,this) || (board.isSpaceEmpty(fwdLeft) && board.isSpaceEnemy(left,this)))) {
+            output.add(new Move(from, fwdLeft));
         }
-        if (board.containsCoord(right)) {
-            if (board.get(right) != null && board.get(right).getColour() != this.getColour()) {
-                output.add(new Move(from, right));
-            }
+        if (board.containsCoord(fwdRight) && (board.isSpaceEnemy(fwdRight,this) || (board.isSpaceEmpty(fwdRight) && board.isSpaceEnemy(right,this)))) {
+            output.add(new Move(from, fwdRight));
         }
         return output;
     }

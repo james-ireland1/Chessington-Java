@@ -12,10 +12,17 @@ public abstract class AbstractPiece implements Piece {
 
     protected final Piece.PieceType type;
     protected final PlayerColour colour;
+    public boolean hasMoved;
 
     protected AbstractPiece(Piece.PieceType type, PlayerColour colour) {
         this.type = type;
         this.colour = colour;
+        this.hasMoved = false;
+    }
+
+    @Override
+    public void setHasMoved() {
+        this.hasMoved = true;
     }
 
     public boolean canMoveHere(Board board, Coordinates to) {
