@@ -146,4 +146,58 @@ public class KingTest {
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,-2)));
         assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,-1)));
     }
+
+    @Test
+    public void blackKingCannotMoveIntoCheck() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        Piece rook = new Rook(PlayerColour.WHITE);
+        Coordinates rookCoords = new Coordinates(3,7);
+        board.placePiece(rookCoords, rook);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,-1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,1)));
+    }
+
+    @Test
+    public void blackKingCanCrossPathOfBlackRook() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates rookCoords = new Coordinates(3,7);
+        board.placePiece(rookCoords, rook);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).contains(new Move(coords, coords.plus(-1,-1)));
+        assertThat(moves).contains(new Move(coords, coords.plus(-1,0)));
+        assertThat(moves).contains(new Move(coords, coords.plus(-1,1)));
+    }
+
+    @Test
+    public void whiteKingCannotMoveIntoCheck() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Coordinates pawnCoords = new Coordinates(3,3);
+        board.placePiece(pawnCoords, pawn);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,-1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,1)));
+    }
 }
