@@ -97,6 +97,7 @@ public class KingTest {
 
         Piece blackPawn = new King(PlayerColour.BLACK);
         Coordinates blackPawnCoords = new Coordinates(3,3);
+        board.placePiece(blackPawnCoords, blackPawn);
 
         List<Move> moves = king.getAllowedMoves(coords, board);
 
@@ -112,9 +113,37 @@ public class KingTest {
 
         Piece blackPawn = new King(PlayerColour.BLACK);
         Coordinates blackPawnCoords = new Coordinates(3,3);
+        board.placePiece(blackPawnCoords, blackPawn);
 
         List<Move> moves = king.getAllowedMoves(coords, board);
 
-        assertThat(moves).contains(new Move(coords, coords.plus(-1,0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,0)));
+    }
+
+    @Test
+    public void whiteKingCannotMoveMoreThanOneSpace() {
+        Board board = Board.empty();
+        Piece king = new King(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(4,3);
+        board.placePiece(coords, king);
+
+        List<Move> moves = king.getAllowedMoves(coords, board);
+
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1,2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2,2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2,1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2,0)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2,-1)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(2,-2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(1,-2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(0,-2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1,-2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,-2)));
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-2,-1)));
     }
 }
