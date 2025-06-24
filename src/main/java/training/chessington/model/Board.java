@@ -105,19 +105,22 @@ public class Board {
     }
 
     public void move(Coordinates from, Coordinates to) {
-        board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
-        board[from.getRow()][from.getCol()] = null;
-        board[to.getRow()][to.getCol()].setHasMoved();
         if (moveIsEnPassant(from, to) && board[to.getRow()][to.getCol()].getType() == Piece.PieceType.PAWN) {
             board[from.getRow()][to.getCol()] = null;
         }
+        board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
+        board[from.getRow()][from.getCol()] = null;
+        board[to.getRow()][to.getCol()].setHasMoved();
     }
 
     public boolean moveIsEnPassant(Coordinates from, Coordinates to) {
         if (from.getRow() == to.getRow() || from.getCol() == to.getCol()) {
             return false;
         }
-        return isSpaceEnemy(new Coordinates(from.getRow(), to.getCol()), board[to.getRow()][to.getCol()]);
+        if (get(from).getType() != Piece.PieceType.PAWN) {
+            return false;
+        }
+        return isSpaceEnemy(new Coordinates(from.getRow(), to.getCol()), get(from)) && isSpaceEmpty(to);
     }
 
     public void placePiece(Coordinates coords, Piece piece) {

@@ -39,6 +39,7 @@ public class King extends AbstractPiece {
         return directions.stream()
                 .map(d -> from.plus(d.getRow(),d.getCol()))
                 .map(t -> checkKingCanMoveHere(board, from, t) ? new Move(from, t) : null)
+                .filter(t -> t != null)
                 .toList();
     }
 }
