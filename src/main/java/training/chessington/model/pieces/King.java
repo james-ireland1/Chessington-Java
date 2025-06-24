@@ -6,6 +6,7 @@ import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class King extends AbstractPiece {
@@ -13,52 +14,31 @@ public class King extends AbstractPiece {
         super(PieceType.KING, colour);
     }
 
-    public List<Move> checkKingCanMoveHere(Board board, Coordinates from, Coordinates direction) {
-        List<Move> moves = new ArrayList<>();
-        Coordinates to = from.plus(direction.getRow(),direction.getCol());
-        if (board.containsCoord(to)) {
+    private List<Coordinates> directions = List.of(
+            new Coordinates(-1,0), //up
+            new Coordinates(-1,1), //up right
+            new Coordinates(0,1),  //right
+            new Coordinates(1,1),  //down right
+            new Coordinates(1,0),  //down
+            new Coordinates(1,-1), //down left
+            new Coordinates(0,-1), //left
+            new Coordinates(-1,-1) //up left
+    );
+
+    public boolean checkKingCanMoveHere(Board board, Coordinates from, Coordinates to) {
+        if (!board.containsCoord(to)) {
+            return false;
+        } else {
             Board provisionalBoard = board.makeProvisionalMove(new Move(from, to));
-            if (board.isProvisional) {
-                moves.add(new Move(from, to));
-            } else if (!provisionalBoard.isSpaceUnderAttack(to, this.getColour())) {
-                if (canMoveHere(board, to)) {
-                    moves.add(new Move(from, to));
-                }
-            }
+            return board.isProvisional || (canMoveHere(board, to) && !provisionalBoard.isSpaceUnderAttack(to, this.getColour()));
         }
-        return moves;
     }
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        List<Move> output = new ArrayList<>();
-
-        Coordinates up = new Coordinates(-1,0);
-        output.addAll(checkKingCanMoveHere(board,from,up));
-
-        Coordinates upRight = new Coordinates(-1,1);
-        output.addAll(checkKingCanMoveHere(board,from,upRight));
-
-        Coordinates right = new Coordinates(0,1);
-        output.addAll(checkKingCanMoveHere(board,from,right));
-
-        Coordinates downRight = new Coordinates(1,1);
-        output.addAll(checkKingCanMoveHere(board,from,downRight));
-
-        Coordinates down = new Coordinates(1,0);
-        output.addAll(checkKingCanMoveHere(board,from,down));
-
-        Coordinates downLeft = new Coordinates(1,-1);
-        output.addAll(checkKingCanMoveHere(board,from,downLeft));
-
-        Coordinates left = new Coordinates(0,-1);
-        output.addAll(checkKingCanMoveHere(board,from,left));
-
-        Coordinates upLeft = new Coordinates(-1,-1);
-        output.addAll(checkKingCanMoveHere(board,from,upLeft));
-
-
-
-        return output;
+        return directions.stream()
+                .map(d -> from.plus(d.getRow(),d.getCol()))
+                .map(t -> checkKingCanMoveHere(board, from, t) ? new Move(from, t) : null)
+                .toList();
     }
 }
