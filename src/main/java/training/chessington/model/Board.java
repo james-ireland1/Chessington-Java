@@ -42,25 +42,18 @@ public class Board {
         return coord.getRow() >= 0 && coord.getRow() < 8 && coord.getCol() >= 0 && coord.getCol() < 8;
     }
 
-    public boolean isSpaceUnderAttack(Coordinates defenderCoord, PlayerColour defenderColour) {
-        PlayerColour attackerColour = PlayerColour.WHITE;
-        if (defenderColour == PlayerColour.WHITE) {
-            attackerColour = PlayerColour.BLACK;
-        }
-        boolean isUnderAttack = false;
+    public boolean isSpaceUnderAttack(Coordinates defenderCoord) {
         for (int row = 0; row < this.board.length; row++) {
             for (int col = 0; col < this.board[row].length; col++) {
                 Coordinates attackerCoord = new Coordinates(row, col);
-                Piece attackerPiece = this.get(attackerCoord);
-                if (this.get(attackerCoord) == null) {continue;}
-                if (attackerPiece.getColour() == attackerColour) {
-                    if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
-                        isUnderAttack = true;
-                    }
+                if (isSpaceEmpty(attackerCoord)) {continue;}
+                Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
+                if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
+                    return true;
                 }
             }
         }
-        return isUnderAttack;
+        return false;
     }
 
     public Board copy() {

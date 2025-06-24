@@ -30,7 +30,7 @@ public class King extends AbstractPiece {
             return false;
         } else {
             Board provisionalBoard = board.makeProvisionalMove(new Move(from, to));
-            return board.isProvisional || (canMoveHere(board, to) && !provisionalBoard.isSpaceUnderAttack(to, this.getColour()));
+            return board.isProvisional || (canMoveHere(board, to) && !provisionalBoard.isSpaceUnderAttack(to));
         }
     }
 
