@@ -2,6 +2,8 @@ package training.chessington.model;
 
 import training.chessington.model.pieces.*;
 
+import java.util.List;
+
 public class Board {
 
     private Piece[][] board = new Piece[8][8];
@@ -54,6 +56,11 @@ public class Board {
             }
         }
         return false;
+
+//        board.stream()
+//                .flatMap(List::stream)
+//                .filter(p -> p != null)
+//                .map(p -> p.getAllowedMoves())
     }
 
     public Board copy() {
