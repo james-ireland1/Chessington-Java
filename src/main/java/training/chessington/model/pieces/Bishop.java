@@ -6,28 +6,28 @@ import training.chessington.model.Move;
 import training.chessington.model.PlayerColour;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Bishop extends AbstractPiece {
+
+    private List<Coordinates> directions = List.of(
+            new Coordinates(-1,1), //up right
+            new Coordinates(1,1),  //down right
+            new Coordinates(1,-1), //down left
+            new Coordinates(-1,-1) //up left
+    );
+
     public Bishop(PlayerColour colour) {
         super(PieceType.BISHOP, colour);
     }
 
     @Override
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
-        List<Move> output = new ArrayList<>();
-
-        Coordinates upRight = new Coordinates(-1,1);
-        Coordinates downRight = new Coordinates(1,1);
-        Coordinates downLeft = new Coordinates(1,-1);
-        Coordinates upLeft = new Coordinates(-1,-1);
-
-        output.addAll(this.getAllMovesInOneDirection(from, board, upRight));
-        output.addAll(this.getAllMovesInOneDirection(from, board, downRight));
-        output.addAll(this.getAllMovesInOneDirection(from, board, downLeft));
-        output.addAll(this.getAllMovesInOneDirection(from, board, upLeft));
-
-
-        return output;
+        return directions.stream()
+                .map(d -> getAllMovesInOneDirection(from, board, d))
+                .flatMap(Collection::stream)
+                .toList();
     }
 }

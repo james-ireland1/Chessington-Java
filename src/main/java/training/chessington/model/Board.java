@@ -81,23 +81,23 @@ public class Board {
     }
 
     public boolean isSpaceEmpty(Coordinates coord) { //not a fan of these functions with multiple returns, not sure how to avoid attempting to access spaces off the edge of the board
-        if (this.containsCoord(coord)) {
-            return this.board[coord.getRow()][coord.getCol()] == null;
-        } else {
-            return false;
-        }
+        return this.containsCoord(coord) && this.get(coord) == null;
     }
 
     public boolean isSpaceEnemy(Coordinates coord, Piece piece) {
-        if (this.containsCoord(coord)) {
-            if (this.get(coord) != null) {
-                return this.get(coord).getColour() != piece.getColour();
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        //return (this.containsCoord(coord) && this.get(coord) != null) ? this.get(coord).getColour() != piece.getColour() : false;
+
+        return this.containsCoord(coord) && this.get(coord) != null && this.get(coord).getColour() != piece.getColour();
+
+//        if (this.containsCoord(coord)) {
+//            if (this.get(coord) != null) {
+//                return this.get(coord).getColour() != piece.getColour();
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
     }
 
     public Piece get(Coordinates coords) {
@@ -107,6 +107,17 @@ public class Board {
     public void move(Coordinates from, Coordinates to) {
         board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
         board[from.getRow()][from.getCol()] = null;
+        board[to.getRow()][to.getCol()].setHasMoved();
+        if (moveIsEnPassant(from, to) && board[to.getRow()][to.getCol()].getType() == Piece.PieceType.PAWN) {
+            board[from.getRow()][to.getCol()] = null;
+        }
+    }
+
+    public boolean moveIsEnPassant(Coordinates from, Coordinates to) {
+        if (from.getRow() == to.getRow() || from.getCol() == to.getCol()) {
+            return false;
+        }
+        return isSpaceEnemy(new Coordinates(from.getRow(), to.getCol()), board[to.getRow()][to.getCol()]);
     }
 
     public void placePiece(Coordinates coords, Piece piece) {

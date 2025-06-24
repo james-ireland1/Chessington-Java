@@ -13,6 +13,7 @@ public abstract class AbstractPiece implements Piece {
     protected final Piece.PieceType type;
     protected final PlayerColour colour;
     public boolean hasMoved;
+    private List<Coordinates> directions;
 
     protected AbstractPiece(Piece.PieceType type, PlayerColour colour) {
         this.type = type;
