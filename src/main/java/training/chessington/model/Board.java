@@ -2,9 +2,12 @@ package training.chessington.model;
 
 import training.chessington.model.pieces.*;
 
+import java.util.List;
+
 public class Board {
 
     private Piece[][] board = new Piece[8][8];
+    public boolean isProvisional = false;
 
     private Board() {
     }
@@ -41,6 +44,62 @@ public class Board {
         return coord.getRow() >= 0 && coord.getRow() < 8 && coord.getCol() >= 0 && coord.getCol() < 8;
     }
 
+    public boolean isSpaceUnderAttack(Coordinates defenderCoord) {
+        for (int row = 0; row < this.board.length; row++) {
+            for (int col = 0; col < this.board[row].length; col++) {
+                Coordinates attackerCoord = new Coordinates(row, col);
+                if (isSpaceEmpty(attackerCoord)) {continue;}
+                Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
+                if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+
+//        board.stream()
+//                .flatMap(List::stream)
+//                .filter(p -> p != null)
+//                .map(p -> p.getAllowedMoves())
+    }
+
+    public Board copy() {
+        Board copy = Board.empty();
+        for (int row = 0; row < this.board.length; row++) {
+            for (int col = 0; col < this.board[row].length; col++) {
+                copy.board[row][col] = this.board[row][col];
+            }
+        }
+        return copy;
+    }
+
+    public Board makeProvisionalMove(Move move) {
+        Board copy = this.copy();
+        copy.isProvisional = true;
+        copy.move(move.getFrom(), move.getTo());
+        return copy;
+    }
+
+    public boolean isSpaceEmpty(Coordinates coord) { //not a fan of these functions with multiple returns, not sure how to avoid attempting to access spaces off the edge of the board
+        return this.containsCoord(coord) && this.get(coord) == null;
+    }
+
+    public boolean isSpaceEnemy(Coordinates coord, Piece piece) {
+        //return (this.containsCoord(coord) && this.get(coord) != null) ? this.get(coord).getColour() != piece.getColour() : false;
+
+        return this.containsCoord(coord) && this.get(coord) != null && this.get(coord).getColour() != piece.getColour();
+
+//        if (this.containsCoord(coord)) {
+//            if (this.get(coord) != null) {
+//                return this.get(coord).getColour() != piece.getColour();
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            return false;
+//        }
+    }
+
     public Piece get(Coordinates coords) {
         return board[coords.getRow()][coords.getCol()];
     }
@@ -48,6 +107,17 @@ public class Board {
     public void move(Coordinates from, Coordinates to) {
         board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
         board[from.getRow()][from.getCol()] = null;
+        board[to.getRow()][to.getCol()].setHasMoved();
+        if (moveIsEnPassant(from, to) && board[to.getRow()][to.getCol()].getType() == Piece.PieceType.PAWN) {
+            board[from.getRow()][to.getCol()] = null;
+        }
+    }
+
+    public boolean moveIsEnPassant(Coordinates from, Coordinates to) {
+        if (from.getRow() == to.getRow() || from.getCol() == to.getCol()) {
+            return false;
+        }
+        return isSpaceEnemy(new Coordinates(from.getRow(), to.getCol()), board[to.getRow()][to.getCol()]);
     }
 
     public void placePiece(Coordinates coords, Piece piece) {
