@@ -105,7 +105,7 @@ public class Board {
     }
 
     public void move(Coordinates from, Coordinates to) {
-        if (moveIsEnPassant(from, to) && board[to.getRow()][to.getCol()].getType() == Piece.PieceType.PAWN) {
+        if (moveIsEnPassant(from, to)) {
             board[from.getRow()][to.getCol()] = null;
         }
         board[to.getRow()][to.getCol()] = board[from.getRow()][from.getCol()];
