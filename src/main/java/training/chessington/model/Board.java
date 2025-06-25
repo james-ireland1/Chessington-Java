@@ -3,6 +3,7 @@ package training.chessington.model;
 import training.chessington.model.pieces.*;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Board {
 
@@ -45,22 +46,30 @@ public class Board {
     }
 
     public boolean isSpaceUnderAttack(Coordinates defenderCoord) {
-        for (int row = 0; row < this.board.length; row++) {
-            for (int col = 0; col < this.board[row].length; col++) {
-                Coordinates attackerCoord = new Coordinates(row, col);
-                if (isSpaceEmpty(attackerCoord)) {continue;}
-                Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
-                if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return IntStream.range(0, this.board.length)
+                .mapToObj(row -> IntStream.range(0, this.board[row].length)
+                        .mapToObj(col -> {
+                            Coordinates attackerCoord = new Coordinates(row, col);
+                            if (isSpaceEmpty(attackerCoord)) {return false;}
+                            Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
+                            return attackerPiece.getAllowedMoves(attackerCoord, this).contains(new Move(attackerCoord, defenderCoord));
+                        })
+                        .reduce(false, (partial, next) -> partial || next))
+                .reduce(false, (partial, next) -> partial || next);
 
-//        board.stream()
-//                .flatMap(List::stream)
-//                .filter(p -> p != null)
-//                .map(p -> p.getAllowedMoves())
+
+//        for (int row = 0; row < this.board.length; row++) {
+//            for (int col = 0; col < this.board[row].length; col++) {
+//                Coordinates attackerCoord = new Coordinates(row, col);
+//                if (isSpaceEmpty(attackerCoord)) {continue;}
+//                Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
+//                if (attackerPiece.getAllowedMoves(attackerCoord,this).contains(new Move(attackerCoord,defenderCoord))) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+
     }
 
     public Board copy() {
@@ -80,7 +89,7 @@ public class Board {
         return copy;
     }
 
-    public boolean isSpaceEmpty(Coordinates coord) { //not a fan of these functions with multiple returns, not sure how to avoid attempting to access spaces off the edge of the board
+    public boolean isSpaceEmpty(Coordinates coord) {
         return this.containsCoord(coord) && this.get(coord) == null;
     }
 
