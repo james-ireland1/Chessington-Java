@@ -50,9 +50,7 @@ public class Board {
                 .mapToObj(row -> IntStream.range(0, this.board[row].length)
                         .mapToObj(col -> {
                             Coordinates attackerCoord = new Coordinates(row, col);
-                            if (isSpaceEmpty(attackerCoord)) {return false;}
-                            Piece attackerPiece = this.get(attackerCoord); //I don't need to check if the other piece is a different colour, as a friendly piece cannot take a friendly piece anyway
-                            return attackerPiece.getAllowedMoves(attackerCoord, this).contains(new Move(attackerCoord, defenderCoord));
+                            return !isSpaceEmpty(attackerCoord) && this.get(attackerCoord).getAllowedMoves(attackerCoord, this).contains(new Move(attackerCoord, defenderCoord));
                         })
                         .reduce(false, (partial, next) -> partial || next))
                 .reduce(false, (partial, next) -> partial || next);
