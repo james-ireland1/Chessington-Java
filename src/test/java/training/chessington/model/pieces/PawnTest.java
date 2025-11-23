@@ -282,4 +282,25 @@ public class PawnTest {
         Coordinates otherDiagonal = pawnCoords.plus(1, -1);
         assertThat(moves).doesNotContain(new Move(pawnCoords, otherDiagonal));
     }
+
+    @Test
+    public void whitePawnsCanMoveDiagonallyNotToCaptureWithEnPassant() {
+        // Arrange
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Piece rook = new Rook(PlayerColour.BLACK);
+        Coordinates pawnCoords = new Coordinates(4, 4);
+        board.placePiece(pawnCoords, pawn);
+
+        Coordinates rookCoords = pawnCoords.plus(0, 1);
+        board.placePiece(rookCoords, rook);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(pawnCoords, board);
+
+        // Assert
+        assertThat(moves).contains(new Move(pawnCoords, pawnCoords.plus(-1,1)));
+        Coordinates otherDiagonal = pawnCoords.plus(-1, -1);
+        assertThat(moves).doesNotContain(new Move(pawnCoords, otherDiagonal));
+    }
 }
